@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.p2pdinner.mappers.MenuItemMapper">
+    <resultMap type="com.p2pdinner.domain.MenuItem" id="MenuItemResultMap">
+        <id property="id" column="id"/>
+        <!--   cart_id, stripe_charge_id, created_date, delivery_type, modified_date, pass_code, order_status, buyer_id, buyer_rating, seller_rating-->
+        <result property="description" column="description"/>
+        <result property="isActive" column="is_active"/>
+        <result property="title" column="title"/>
+        <result property="addressLine1" column="address_line1"/>
+        <result property="addressLine2" column="address_line2"/>
+        <result property="zipCode" column="zip_code"/>
+        <result property="state" column="state"/>
+        <result property="city" column="city"/>
+        <result property="availableQuantity" column="available_quantity"/>
+        <result property="costPerItem" column="cost_per_item"/>
+        <result property="imageUri" column="image_uri"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="closeDate" column="close_date"/>
+        <result property="profileId" column="user_profile_id" />
+    </resultMap>
+
+    <select id="findMenuItemById" resultMap="MenuItemResultMap" statementType="PREPARED">
+        select * from menu_items where id = #{id} and user_profile_id = #{profileId}
+    </select>
+    <select id="doesMenuItemExists" resultType="int" parameterType="java.util.Map" statementType="PREPARED">
+        select count(*) from menu_items where id = #{id} and user_profile_id = #{profile_id}
+    </select>
+    <insert id="createMenuItem"
+            parameterType="com.p2pdinner.domain.MenuItem"
+            statementType="PREPARED"
+            keyProperty="id"
+            useGeneratedKeys="true"
+            timeout="20">
+        INSERT INTO menu_items(
+        user_profile_id,
+        description,
+        is_active,
+        title,
+        address_line1,
+        address_line2,
+        available_quantity,
+        city,
+        cost_per_item,
+        image_uri,
+        state,
+        zip_code,
+        start_date,
+        end_date,
+        close_date)
+        VALUES (
+        #{profileId},
+        #{description},
+        #{isActive},
+        #{title},
+        #{addressLine1},
+        #{addressLine2},
+        #{availableQuantity},
+        #{city},
+        #{costPerItem},
+        #{imageUri},
+        #{state},
+        #{zipCode},
+        #{startDate},
+        #{endDate},
+        #{closeDate});
+    </insert>
+    <update id="updateMenuItem"
+            parameterType="com.p2pdinner.domain.MenuItem"
+            statementType="PREPARED"
+            keyProperty="id"
+            timeout="20">
+        update menu_items
+        set
+            description = #{description},
+            is_active = #{isActive},
+            title = #{title},
+            address_line1 = #{addressLine1} ,
+            address_line2 = #{addressLine2} ,
+            available_quantity = #{availableQuantity},
+            city = #{city},
+            cost_per_item = #{costPerItem},
+            image_uri = #{imageUri},
+            state = #{state} ,
+            zip_code = #{zipCode},
+            start_date = #{startDate} ,
+            end_date = #{endDate},
+            close_date = #{closeDate}
+        where id = #{id} and user_profile_id = #{profileId}
+
+    </update>
+
+    <update id="partialUpdateMenuItem"
+            parameterType="com.p2pdinner.domain.MenuItem"
+            statementType="PREPARED">
+        update menu_items
+        <set>
+            <if test="description != null">description=#{description},</if>
+            <if test="isActive != null">is_active = #{isActive},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="addressLine1 != null">address_line1 = #{addressLine1},</if>
+            <if test="addressLine2 != null">address_line2 = #{addressLine2},</if>
+            <if test="availableQuantity != null">available_quantity = #{availableQuantity},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="costPerItem != null">cost_per_item = #{costPerItem},</if>
+            <if test="imageUri != null">image_uri = #{imageUri},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="zipCode != null">zip_code = #{zipCode},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="closeDate != null">close_date = #{closeDate},</if>
+        </set>
+        where id = #{id} and user_profile_id = #{profileId}
+    </update>
+
+</mapper>

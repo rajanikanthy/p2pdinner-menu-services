@@ -1,0 +1,33 @@
+{
+  "id": 1,
+  "emailAddress": "reddy.rajanikanth@gmail.com",
+  "name": null,
+  "authenticationProvider": "facebook",
+  "addressLine1": null,
+  "addressLine2": null,
+  "city": null,
+  "state": null,
+  "zip": null,
+  "latitude": null,
+  "longitude": null,
+  "password": "welcome123",
+  "accountBalance": null,
+  "isActive": null,
+  "devices": [
+    {
+      "id": 7,
+      "deviceType": "android",
+      "registrationId": "12345",
+      "notificationsEnabled": null
+    }
+  ],
+  "tokenType": null,
+  "stripePublishableKey": null,
+  "scope": null,
+  "liveMode": null,
+  "refreshToken": null,
+  "accessToken": null,
+  "tier": null,
+  "stripeCustomerId": null,
+  "active": null
+}

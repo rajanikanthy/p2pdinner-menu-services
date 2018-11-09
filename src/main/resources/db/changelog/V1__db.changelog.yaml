@@ -1,0 +1,242 @@
+databaseChangeLog:
+  - changeSet:
+      id: createTable_menu_items
+      author: rajani@p2pdinner.com
+      changes:
+        - createTable:
+            tableName: menu_items
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: is_active
+                  type: boolean
+              - column:
+                  name: title
+                  type: varchar(255)
+              - column:
+                  name: user_profile_id
+                  type: int
+              - column:
+                  name: address_line1
+                  type: varchar2(255)
+              - column:
+                  name: address_line2
+                  type: varchar2(255)
+              - column:
+                  name: available_quantity
+                  type: int
+              - column:
+                  name: city
+                  type: varchar2(255)
+              - column:
+                  name: cost_per_item
+                  type: float
+              - column:
+                  name: image_uri
+                  type: varchar2(255)
+              - column:
+                  name: state
+                  type: varchar2(255)
+              - column:
+                  name: zip_code
+                  type: varchar2(255)
+              - column:
+                  name: start_date
+                  type: bigint
+              - column:
+                  name: end_date
+                  type: bigint
+              - column:
+                  name: close_date
+                  type: bigint
+  - changeSet:
+      id: createTable_dinner_category
+      author: rajani@p2pdinner.com
+      changes:
+        - createTable:
+            tableName: dinner_category
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: boolean
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: start_date
+                  type: dateTime
+              - column:
+                  name: modified_date
+                  type: dateTime
+              - column:
+                  name: end_date
+                  type: dateTime
+        - createTable:
+            tableName: dinner_delivery
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: boolean
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: start_date
+                  type: dateTime
+              - column:
+                  name: modified_date
+                  type: dateTime
+              - column:
+                  name: end_date
+                  type: dateTime
+        - createTable:
+            tableName: dinner_special_needs
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: boolean
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: start_date
+                  type: dateTime
+              - column:
+                  name: modified_date
+                  type: dateTime
+              - column:
+                  name: end_date
+                  type: dateTime
+  - changeSet:
+      id: loaddata_dinner_category_1
+      author: rajani@p2pdinner.com
+      changes:
+        - loadData:
+            tableName: dinner_category
+            separator: ";"
+            quotChar: "\""
+            file: dinner_category.csv
+  - changeSet:
+      id: loaddata_dinner_special_needs
+      author: rajani@p2pdinner.com
+      changes:
+        - loadData:
+            tableName: dinner_special_needs
+            separator: ";"
+            quotChar: "\""
+            file: dinner_special_needs.csv
+  - changeSet:
+      id: loaddata_dinner_delivery_1
+      author: rajani@p2pdinner.com
+      changes:
+        - loadData:
+            tableName: dinner_delivery
+            separator: ";"
+            quotChar: "\""
+            file: dinner_delivery.csv
+  - changeSet:
+      id: createtable_dinner_categroy_menu_item
+      author: rajani@p2pdinner.com
+      changes:
+        - createTable:
+            tableName: menu_item_category
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: menu_item_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_category_menuitem
+                    references: menu_items(id)
+                    nullable: false
+              - column:
+                  name: dinner_category_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_category
+                    references: dinner_category(id)
+                    nullable: false
+        - createTable:
+            tableName: menu_item_special_needs
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: menu_item_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_special_needs_menuitem
+                    references: menu_items(id)
+                    nullable: false
+              - column:
+                  name: dinner_special_needs_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_special_needs
+                    references: dinner_special_needs(id)
+                    nullable: false
+        - createTable:
+            tableName: menu_item_delivery
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: menu_item_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_delivery_menuitem
+                    references: menu_items(id)
+                    nullable: false
+              - column:
+                  name: dinner_delivery_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_delivery
+                    references: dinner_delivery(id)
+                    nullable: false

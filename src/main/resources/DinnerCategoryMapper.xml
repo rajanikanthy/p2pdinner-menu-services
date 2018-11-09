@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.p2pdinner.domain">
+    <resultMap id="dinnerCategoryResultMap" type="DinnerCategory">
+        <id property="id" column="c_id" />
+        <result property="name" column="name" />
+    </resultMap>
+
+    <select id="getCategoriesByMenuId" resultMap="dinnerCategoryResultMap" parameterType="java.util.Map" statementType="PREPARED">
+        select dc.id as c_id, dc.name
+            from dinner_category dc inner join menu_item_category mic on (dc.id = mic.dinner_category_id)
+                inner join menu_items mi on (mic.menu_item_id = mi.id)
+        where mi.id = #{menuItemId} and mi.user_profile_id = #{profileId}
+    </select>
+
+    <select id="categoryByName" resultMap="dinnerCategoryResultMap" parameterType="String" statementType="PREPARED">
+        select dc.id as c_id, dc.name from dinner_category dc where upper(dc.name) = upper(#{name})
+    </select>
+
+    <insert id="associateCategoryWithMenuItem"
+            parameterType="java.util.Map"
+            statementType="PREPARED"
+            keyProperty="id"
+            useGeneratedKeys="true"
+            timeout="20">
+        insert into menu_item_category(menu_item_id, dinner_category_id)
+            values (#{menuItemId}, #{categoryId})
+    </insert>
+
+    <delete id="disassociateCategoryWithMenuItem"
+            parameterType="java.util.Map"
+            statementType="PREPARED"
+            timeout="20">
+        delete from menu_item_category where dinner_category_id = #{dinnerCategoryId} and menu_item_id = #{menuItemId}
+    </delete>
+
+</mapper>

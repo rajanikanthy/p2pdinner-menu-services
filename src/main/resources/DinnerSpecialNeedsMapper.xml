@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.p2pdinner.domain">
+    <resultMap id="dinnerSpecialNeedsResultMap" type="DinnerSpecialNeeds">
+        <id property="id" column="c_id" />
+        <result property="name" column="name" />
+    </resultMap>
+
+    <select id="getSpecialNeedsByMenuId" resultMap="dinnerSpecialNeedsResultMap" parameterType="java.util.Map" statementType="PREPARED">
+        select dc.id as c_id, dc.name
+            from dinner_special_needs dc inner join menu_item_category mic on (dc.id = mic.dinner_special_needs_id)
+                inner join menu_items mi on (mic.menu_item_id = mi.id)
+        where mi.id = #{menuItemId} and mi.user_profile_id = #{profileId}
+    </select>
+
+    <select id="specialNeedsByName" resultMap="dinnerSpecialNeedsResultMap" parameterType="String" statementType="PREPARED">
+        select dc.id as c_id, dc.name from dinner_special_needs dc where upper(dc.name) = upper(#{name})
+    </select>
+
+    <insert id="associateSpecialNeedsWithMenuItem"
+            parameterType="java.util.Map"
+            statementType="PREPARED"
+            keyProperty="id"
+            useGeneratedKeys="true"
+            timeout="20">
+        insert into menu_item_special_needs(menu_item_id, dinner_special_needs_id)
+            values (#{menuItemId}, #{dinnerSpecialNeedsId})
+    </insert>
+
+    <delete id="disassociateSpecialNeedsWithMenuItem"
+            parameterType="java.util.Map"
+            statementType="PREPARED"
+            timeout="20">
+        delete from menu_item_special_needs where dinner_special_needs_id = #{dinnerSpecialNeedsId} and menu_item_id = #{menuItemId}
+    </delete>
+
+</mapper>

@@ -1,0 +1,7 @@
+{
+  "exception": "com.p2pdinner.profile.exceptions.UserProfileNotFoundException",
+  "error": "Invalid profile 9999",
+  "uri": "/api/profiles/9999",
+  "timestamp": 1479380787924,
+  "status": 404
+}
