@@ -6,7 +6,6 @@ import com.p2pdinner.filepicker.FilePickerOperations;
 import com.p2pdinner.filepicker.FilePickerUploadResponse;
 import com.p2pdinner.mappers.MenuItemMapper;
 import com.p2pdinner.services.ProfileServicesProxy;
-import com.p2pdinner.services.Sender;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +36,6 @@ public class MenuItemController {
 
     @Autowired
     private FilePickerOperations filePickerOperations;
-
-    @Autowired
-    private Sender sender;
 
     @Autowired
     private ProfileServicesProxy profileServicesProxy;
@@ -137,7 +133,6 @@ public class MenuItemController {
             dinnerListing.setSellerProfileId(profileId);
             dinnerListing.setDeliveryTypes(StringUtils.collectionToCommaDelimitedString(menuItem.getDeliveries()));
             dinnerListing.setSpecialNeeds(StringUtils.collectionToCommaDelimitedString(menuItem.getSpecialNeeds()));
-            sender.send(dinnerListing);
             return ResponseEntity.ok(dinnerListing);
         }
         return ResponseEntity.badRequest().build();

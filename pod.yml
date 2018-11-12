@@ -1,0 +1,94 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{"deployment.kubernetes.io/revision":"2"},"creationTimestamp":"2018-10-25T12:54:21Z","generation":2,"labels":{"app":"p2pdinner-profile-services"},"name":"p2pdinner-profile-services","namespace":"default","resourceVersion":"1703405","selfLink":"/apis/extensions/v1beta1/namespaces/default/deployments/p2pdinner-profile-services","uid":"17954641-d855-11e8-96b1-42010a80003b"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"p2pdinner-profile-services"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"p2pdinner-profile-services"}},"spec":{"containers":[{"env":[{"name":"JDBC_URL","valueFrom":{"secretKeyRef":{"key":"jdbcUrl","name":"p2pdinner-profile-service-secret"}}},{"name":"DB_USERNAME","valueFrom":{"secretKeyRef":{"key":"username","name":"cloudsql-db-credentials"}}},{"name":"DB_PASSWORD","valueFrom":{"secretKeyRef":{"key":"password","name":"cloudsql-db-credentials"}}}],"image":"gcr.io/glowing-vehicle-220016/profile-service-services:latest","imagePullPolicy":"Always","name":"profile-service-services","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"},{"command":["/cloud_sql_proxy","-instances=glowing-vehicle-220016:us-central1:profile-services-datastore=tcp:5433","-credential_file=/secrets/cloudsql/credentials.json"],"image":"gcr.io/cloudsql-docker/gce-proxy:1.11","imagePullPolicy":"IfNotPresent","name":"cloudsql-proxy","resources":{},"securityContext":{"allowPrivilegeEscalation":false,"runAsUser":2},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/secrets/cloudsql","name":"cloudsql-instance-credentials","readOnly":true}]}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30,"volumes":[{"name":"cloudsql-instance-credentials","secret":{"defaultMode":420,"secretName":"cloudsql-instance-credentials"}}]}}},"status":{"availableReplicas":3,"conditions":[{"lastTransitionTime":"2018-11-03T02:29:08Z","lastUpdateTime":"2018-11-03T02:29:08Z","message":"Deployment has minimum availability.","reason":"MinimumReplicasAvailable","status":"True","type":"Available"}],"observedGeneration":2,"readyReplicas":3,"replicas":3,"updatedReplicas":3}}
+  creationTimestamp: 2018-11-03T22:54:44Z
+  generation: 1
+  labels:
+    app: p2pdinner-menu-services
+  name: p2pdinner-menu-services
+  namespace: default
+  resourceVersion: "1816938"
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/p2pdinner-menu-services
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: p2pdinner-menu-services
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: p2pdinner-menu-services
+    spec:
+      containers:
+      - env:
+        - name: JDBC_URL
+          valueFrom:
+            secretKeyRef:
+              key: jdbcUrl
+              name: p2pdinner-menu-service-secret
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: cloudsql-db-credentials
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: cloudsql-db-credentials
+        image: gcr.io/glowing-vehicle-220016/p2pdinner-menu-services:latest
+        imagePullPolicy: Always
+        name: p2pdinner-menu-services
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      - command:
+        - /cloud_sql_proxy
+        - -instances=glowing-vehicle-220016:us-central1:profile-services-datastore=tcp:5433
+        - -credential_file=/secrets/cloudsql/credentials.json
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        imagePullPolicy: IfNotPresent
+        name: cloudsql-proxy
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 2
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /secrets/cloudsql
+          name: cloudsql-instance-credentials
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: cloudsql-instance-credentials
+        secret:
+          defaultMode: 420
+          secretName: cloudsql-instance-credentials
+status:
+  availableReplicas: 3
+  conditions:
+  - lastTransitionTime: 2018-11-03T22:54:46Z
+    lastUpdateTime: 2018-11-03T22:54:46Z
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 1
+  readyReplicas: 3
+  replicas: 3
+  updatedReplicas: 3
