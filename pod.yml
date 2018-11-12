@@ -31,11 +31,6 @@ spec:
     spec:
       containers:
       - env:
-        - name: JDBC_URL
-          valueFrom:
-            secretKeyRef:
-              key: jdbcUrl
-              name: p2pdinner-menu-service-secret
         - name: DB_USERNAME
           valueFrom:
             secretKeyRef:
