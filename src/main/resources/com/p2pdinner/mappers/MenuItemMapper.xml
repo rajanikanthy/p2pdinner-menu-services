@@ -23,6 +23,10 @@
         <result property="profileId" column="user_profile_id" />
     </resultMap>
 
+    <select id="findAllMenuItemsById" resultMap="MenuItemResultMap" statementType="PREPARED">
+        select * from menu_items where user_profile_id = #{profileId}
+    </select>
+
     <select id="findMenuItemById" resultMap="MenuItemResultMap" statementType="PREPARED">
         select * from menu_items where id = #{id} and user_profile_id = #{profileId}
     </select>

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Collection;
 
 /**
  * Created by rajaniy on 11/2/16.
@@ -39,6 +40,14 @@ public class MenuItemController {
 
     @Autowired
     private ProfileServicesProxy profileServicesProxy;
+
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<MenuItem>> itemsByProfile(@PathVariable("profileId") Integer profileId) {
+        Collection<MenuItem> items = menuItemMapper.findAllMenuItemsById(profileId);
+        return ResponseEntity.ok(items);
+    }
+
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuItem> itemById(@PathVariable("profileId") Integer profileId, @PathVariable("id")Integer id) {
