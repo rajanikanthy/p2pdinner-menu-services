@@ -1,9 +1,6 @@
 spring:
   application:
     name: p2pdinner-menu-services
-  cloud:
-    config:
-      uri: http://35.193.206.122
 eureka:
   instance:
     instanceId: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}

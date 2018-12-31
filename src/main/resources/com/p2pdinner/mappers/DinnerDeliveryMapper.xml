@@ -2,11 +2,15 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.p2pdinner.domain">
-    <resultMap id="dinnerDeliveryResultMap" type="DinnerDelivery">
+<mapper namespace="com.p2pdinner.mappers.DinnerDeliveryMapper">
+    <resultMap id="dinnerDeliveryResultMap" type="com.p2pdinner.domain.DinnerDelivery">
         <id property="id" column="c_id" />
         <result property="name" column="name" />
     </resultMap>
+
+    <select id="findAllDeliveryTypes" resultMap="dinnerDeliveryResultMap" statementType="PREPARED">
+        select dc.id as c_id, dc.name as name from dinner_delivery dc order by dc.name
+    </select>
 
     <select id="getDeliveryByMenuId" resultMap="dinnerDeliveryResultMap" parameterType="java.util.Map" statementType="PREPARED">
         select dc.id as c_id, dc.name
@@ -15,7 +19,7 @@
         where mi.id = #{menuItemId} and mi.user_profile_id = #{profileId}
     </select>
 
-    <select id="specialNeedsByName" resultMap="dinnerSpecialNeedsResultMap" parameterType="String" statementType="PREPARED">
+    <select id="deliveryByName" resultMap="dinnerDeliveryResultMap" parameterType="String" statementType="PREPARED">
         select dc.id as c_id, dc.name from dinner_delivery dc where upper(dc.name) = upper(#{name})
     </select>
 
@@ -25,7 +29,7 @@
             keyProperty="id"
             useGeneratedKeys="true"
             timeout="20">
-        insert into menu_item_special_needs(menu_item_id, dinner_delivery_id)
+        insert into menu_item_delivery(menu_item_id, dinner_delivery_id)
             values (#{menuItemId}, #{dinnerDeliveryId})
     </insert>
 

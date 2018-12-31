@@ -80,6 +80,7 @@ public class MenuItemController {
             return ResponseEntity.notFound().build();
         }
         menuItem.setId(id);
+        menuItem.setProfileId(profileId);
         menuItemMapper.partialUpdateMenuItem(menuItem);
         MenuItem updatedItem = menuItemMapper.findMenuItemById(profileId, id);
         return ResponseEntity.ok(updatedItem);

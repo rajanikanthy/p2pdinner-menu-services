@@ -2,11 +2,15 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.p2pdinner.domain">
-    <resultMap id="dinnerCategoryResultMap" type="DinnerCategory">
+<mapper namespace="com.p2pdinner.mappers.DinnerCategoryMapper">
+    <resultMap id="dinnerCategoryResultMap" type="com.p2pdinner.domain.DinnerCategory">
         <id property="id" column="c_id" />
         <result property="name" column="name" />
     </resultMap>
+
+    <select id="findAllCategories" resultMap="dinnerCategoryResultMap" statementType="PREPARED">
+        select dc.id as c_id, dc.name as name from dinner_category dc order by name
+    </select>
 
     <select id="getCategoriesByMenuId" resultMap="dinnerCategoryResultMap" parameterType="java.util.Map" statementType="PREPARED">
         select dc.id as c_id, dc.name
