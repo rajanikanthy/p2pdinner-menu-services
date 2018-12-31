@@ -10,8 +10,6 @@ public class DinnerDelivery implements Serializable {
 	private Integer id;
 	
 	private String name;
-	
-	private Collection<MenuItem> dinnerListings = new ArrayList<MenuItem>();
 
 	public Integer getId() {
 		return id;
@@ -27,14 +25,6 @@ public class DinnerDelivery implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public Collection<MenuItem> getDinnerListings() {
-		return dinnerListings;
-	}
-	
-	public void setDinnerListings(Collection<MenuItem> dinnerListings) {
-		this.dinnerListings = dinnerListings;
 	}
 
 }

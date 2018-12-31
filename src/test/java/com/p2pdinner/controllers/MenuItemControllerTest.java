@@ -38,7 +38,7 @@ import io.restassured.module.mockmvc.response.MockMvcResponse;
  * Created by rajaniy on 11/2/16.
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(properties = {"eureka.client.enabled=false"})
 @WebAppConfiguration
 public class MenuItemControllerTest {
 

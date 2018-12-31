@@ -16,7 +16,6 @@ import java.util.Optional;
 /**
  * Created by rajaniy on 1/27/17.
  */
-@RequestMapping("/api/{profileId}/menuitem/{menuItemId}/categories")
 @RestController
 public class DinnerCategoryController {
     private Logger _logger = LoggerFactory.getLogger(DinnerCategoryController.class);
@@ -27,26 +26,30 @@ public class DinnerCategoryController {
     @Autowired
     private MenuItemMapper menuItemMapper;
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> categories(@PathVariable("profileId")Integer profileId, @PathVariable("menuItemId")Integer menuItemId) {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/categories")
+    public ResponseEntity<?> allCategories() {
+        return ResponseEntity.ok(dinnerCategoryMapper.findAllCategories());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/categories")
+    public ResponseEntity<?> categories(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId) {
         return ResponseEntity.ok(dinnerCategoryMapper.getCategoriesByMenuId(profileId, menuItemId));
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addCategory(@PathVariable("profileId")Integer profileId, @PathVariable("menuItemId")Integer menuItemId, @RequestBody DinnerCategory dinnerCategory) {
-       Optional<DinnerCategory> dc = dinnerCategoryMapper.categoryByName(dinnerCategory.getName());
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/categories")
+    public ResponseEntity<?> addCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @RequestBody DinnerCategory dinnerCategory) {
+        DinnerCategory dc = dinnerCategoryMapper.categoryByName(dinnerCategory.getName());
         MenuItem menuItem = menuItemMapper.findMenuItemById(profileId, menuItemId);
-       if (dc.isPresent() && menuItem != null) {
-            dinnerCategoryMapper.associateCategoryWithMenuItem(menuItem.getId(), dc.get().getId());
+        if (dc != null) {
+            dinnerCategoryMapper.associateCategoryWithMenuItem(menuItem.getId(), dc.getId());
             return ResponseEntity.ok(dinnerCategory);
-       } else {
-           return ResponseEntity.badRequest().build();
-       }
-
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @RequestMapping(path = "/{dinnerCategoryId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteCategory(@PathVariable("profileId")Integer profileId, @PathVariable("menuItemId")Integer menuItemId, @PathVariable("dinnerCategoryId") Integer dinnerCategoryId) {
+    @RequestMapping(path = "/api/{profileId}/menuitem/{menuItemId}/categories/{dinnerCategoryId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @PathVariable("dinnerCategoryId") Integer dinnerCategoryId) {
         dinnerCategoryMapper.disassociateCategoryWithMenuItem(menuItemId, dinnerCategoryId);
         return ResponseEntity.ok().build();
     }
