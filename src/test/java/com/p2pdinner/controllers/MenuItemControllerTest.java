@@ -75,11 +75,22 @@ public class MenuItemControllerTest {
 
     @Test
     public void testItemById() throws Exception {
+        MockMvcResponse response = given()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .body("{\n" +
+                        "\t\"title\" : \"Chicken Biriyani3\",\n" +
+                        "\t\"description\" : \"Rice mixed with tender chicken and indian spices\"\n" +
+                        "}")
+                .when().post("/api/{profileId}/menuitem", 1)
+                .then().statusCode(201).extract().response();
+
+        String location = response.getHeader("location");
+        Integer menuItemId = Integer.valueOf(location.substring(location.lastIndexOf('/') + 1, location.length()));
+
+
         given()
-                .when().get("/api/{profileId}/menuitem/{id}", new HashMap<String, Object>() {{
-            put("profileId", 1);
-            put("id", 1);
-        }})
+                .when().get("/api/{profileId}/menuitem/{id}", 1, menuItemId)
                 .then().statusCode(200);
     }
 
@@ -87,7 +98,7 @@ public class MenuItemControllerTest {
     @Ignore
     public void invalidProfileIdTest() throws Exception {
         given()
-                .when().get("/api/{profileId}/menuitem/{id}", 9999 , 1)
+                .when().get("/api/{profileId}/menuitem/{id}", 9999, 1)
                 .then().assertThat().statusCode(400);
     }
 
@@ -100,6 +111,42 @@ public class MenuItemControllerTest {
                         "\t\"title\" : \"Chicken Biriyani2\",\n" +
                         "\t\"description\" : \"Rice mixed with tender chicken and indian spices\"\n" +
                         "}")
+                .when().post("/api/{profileId}/menuitem", 1)
+                .then().statusCode(201);
+    }
+
+    @Test
+    public void testCreateMenuItemAllFields() throws Exception {
+        String payload = "{\n" +
+                "   \"title\":\"Chicken Biriyani\",\n" +
+                "   \"addressLine1\":\"5338 Piazza Ct\",\n" +
+                "   \"city\":\"Pleasanton\",\n" +
+                "   \"state\":\"CA\",\n" +
+                "   \"zipCode\":\"94588\",\n" +
+                "   \"availableQty\":\"10\",\n" +
+                "   \"costPerItem\":\"6.99\",\n" +
+                "   \"startDateAsString\":\"01/01/19\",\n" +
+                "   \"endDateAsString\":\"01/01/19\",\n" +
+                "   \"closeDateAsString\":\"01/01/19\",\n" +
+                "   \"categories\":[\n" +
+                "      \"American\",\n" +
+                "      \"Chinese\"\n" +
+                "   ],\n" +
+                "   \"specialNeeds\":[\n" +
+                "      \"Diabetic\",\n" +
+                "      \"Gluten Free\"\n" +
+                "   ],\n" +
+                "   \"deliveries\":[\n" +
+                "      \"Eat-In\"\n" +
+                "   ],\n" +
+                "   \"startDate\":1546329600000,\n" +
+                "   \"endDate\":1546329600000,\n" +
+                "   \"closeDate\":1546329600000\n" +
+                "}";
+        given()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .body(payload)
                 .when().post("/api/{profileId}/menuitem", 1)
                 .then().statusCode(201);
     }
@@ -169,5 +216,52 @@ public class MenuItemControllerTest {
 
         assertThat(menuItem.getAddressLine1(), Matchers.equalTo("5338 Piazza Ct"));
         assertThat(menuItem.getZipCode(), Matchers.equalTo("94588"));
+    }
+
+    @Test
+    public void testDeleteMenuItem() throws Exception {
+
+        String payload = "{\n" +
+                "   \"title\":\"Lasaniya\",\n" +
+                "   \"addressLine1\":\"5338 Piazza Ct\",\n" +
+                "   \"city\":\"Pleasanton\",\n" +
+                "   \"state\":\"CA\",\n" +
+                "   \"zipCode\":\"94588\",\n" +
+                "   \"availableQty\":\"10\",\n" +
+                "   \"costPerItem\":\"6.99\",\n" +
+                "   \"startDateAsString\":\"01/01/19\",\n" +
+                "   \"endDateAsString\":\"01/01/19\",\n" +
+                "   \"closeDateAsString\":\"01/01/19\",\n" +
+                "   \"categories\":[\n" +
+                "      \"American\",\n" +
+                "      \"Chinese\"\n" +
+                "   ],\n" +
+                "   \"specialNeeds\":[\n" +
+                "      \"Diabetic\",\n" +
+                "      \"Gluten Free\"\n" +
+                "   ],\n" +
+                "   \"deliveries\":[\n" +
+                "      \"Eat-In\"\n" +
+                "   ],\n" +
+                "   \"startDate\":1546329600000,\n" +
+                "   \"endDate\":1546329600000,\n" +
+                "   \"closeDate\":1546329600000\n" +
+                "}";
+        MockMvcResponse mockMvcResponse = given()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .when().post("/api/1/menuitem")
+                .then().statusCode(201).extract().response();
+
+
+        String location = mockMvcResponse.getHeader("location");
+
+        Integer menuItemId = Integer.valueOf(location.substring(location.lastIndexOf('/') + 1, location.length()));
+
+        given()
+                .delete("/api/{profileId}/menuitem/{menuItemId}", 1, menuItemId)
+                .then().assertThat().statusCode(200);
+
     }
 }

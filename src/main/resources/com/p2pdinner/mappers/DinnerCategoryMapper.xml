@@ -19,14 +19,14 @@
         where mi.id = #{menuItemId} and mi.user_profile_id = #{profileId}
     </select>
 
-    <select id="categoryByName" resultMap="dinnerCategoryResultMap" parameterType="String" statementType="PREPARED">
-        select dc.id as c_id, dc.name from dinner_category dc where upper(dc.name) = upper(#{name})
+    <select id="categoryByName" resultMap="dinnerCategoryResultMap">
+        select dc.id as c_id, dc.name from dinner_category dc where upper(dc.name) = upper(#{categoryByName})
     </select>
 
     <insert id="associateCategoryWithMenuItem"
             parameterType="java.util.Map"
             statementType="PREPARED"
-            keyProperty="id"
+            keyColumn="id"
             useGeneratedKeys="true"
             timeout="20">
         insert into menu_item_category(menu_item_id, dinner_category_id)

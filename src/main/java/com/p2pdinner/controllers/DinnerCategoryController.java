@@ -36,7 +36,7 @@ public class DinnerCategoryController {
         return ResponseEntity.ok(dinnerCategoryMapper.getCategoriesByMenuId(profileId, menuItemId));
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/categories")
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/categories")
     public ResponseEntity<?> addCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @RequestBody DinnerCategory dinnerCategory) {
         DinnerCategory dc = dinnerCategoryMapper.categoryByName(dinnerCategory.getName());
         MenuItem menuItem = menuItemMapper.findMenuItemById(profileId, menuItemId);

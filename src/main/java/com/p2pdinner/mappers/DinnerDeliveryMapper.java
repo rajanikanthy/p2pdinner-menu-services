@@ -21,7 +21,7 @@ import java.util.Optional;
 public interface DinnerDeliveryMapper {
     Collection<DinnerDelivery> findAllDeliveryTypes();
     Collection<DinnerDelivery> getDeliveryByMenuId(@Param("menuItemId")Integer profileId, @Param("profileId")Integer menuItemId);
-    DinnerDelivery deliveryByName(@Param("deliveryByName")String name);
-    void associateDeliveryWithMenuItem(@Param("menuItemId")Integer menuItemId, @Param("dinnerDeliveryId")Integer dinnerDeliveryId);
-    void disassociateDeliveryWithMenuItem(@Param("menuItemId")Integer menuItemId, @Param("dinnerDeliveryId")Integer dinnerDeliveryId);
+    DinnerDelivery deliveryByName(@Param("name")String name);
+    void associateDeliveryTypeWithMenuItem(@Param("menuItemId")Integer menuItemId, @Param("dinnerDeliveryId")Integer dinnerDeliveryId);
+    void disassociateDeliveryTypeWithMenuItem(@Param("menuItemId")Integer menuItemId, @Param("dinnerDeliveryId")Integer dinnerDeliveryId);
 }

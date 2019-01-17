@@ -14,7 +14,7 @@
 
     <select id="getDeliveryByMenuId" resultMap="dinnerDeliveryResultMap" parameterType="java.util.Map" statementType="PREPARED">
         select dc.id as c_id, dc.name
-            from dinner_delivery dc inner join menu_item_category mic on (dc.id = mic.dinner_delivery_id)
+            from dinner_delivery dc inner join menu_item_delivery mic on (dc.id = mic.dinner_delivery_id)
                 inner join menu_items mi on (mic.menu_item_id = mi.id)
         where mi.id = #{menuItemId} and mi.user_profile_id = #{profileId}
     </select>
@@ -23,17 +23,17 @@
         select dc.id as c_id, dc.name from dinner_delivery dc where upper(dc.name) = upper(#{name})
     </select>
 
-    <insert id="associateSpecialNeedsWithMenuItem"
+    <insert id="associateDeliveryTypeWithMenuItem"
             parameterType="java.util.Map"
             statementType="PREPARED"
-            keyProperty="id"
+            keyColumn="id"
             useGeneratedKeys="true"
             timeout="20">
         insert into menu_item_delivery(menu_item_id, dinner_delivery_id)
             values (#{menuItemId}, #{dinnerDeliveryId})
     </insert>
 
-    <delete id="disassociateSpecialNeedsWithMenuItem"
+    <delete id="disassociateDeliveryTypeWithMenuItem"
             parameterType="java.util.Map"
             statementType="PREPARED"
             timeout="20">

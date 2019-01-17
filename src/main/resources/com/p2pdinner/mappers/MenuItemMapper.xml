@@ -120,4 +120,11 @@
         where id = #{id} and user_profile_id = #{profileId}
     </update>
 
+    <delete id="deleteMenuItem"
+            parameterType="com.p2pdinner.domain.MenuItem"
+            statementType="PREPARED"
+            timeout="20">
+        delete from menu_items where id = #{id} and user_profile_id = #{profileId}
+    </delete>
+
 </mapper>

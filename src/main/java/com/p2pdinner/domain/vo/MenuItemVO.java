@@ -1,23 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.p2pdinner.domain;
+package com.p2pdinner.domain.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.p2pdinner.domain.DinnerCategory;
+import com.p2pdinner.domain.DinnerDelivery;
+import com.p2pdinner.domain.DinnerSpecialNeeds;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.List;
 
-/**
- *
- * @author rajani
- */
-@JsonSerialize
-public class MenuItem implements Serializable {
+public class MenuItemVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
@@ -53,11 +43,11 @@ public class MenuItem implements Serializable {
 
     private Long closeDate;
 
-    private Collection<DinnerCategory> categories;
+    private Collection<String> categories;
 
-    private Collection<DinnerSpecialNeeds> specialNeeds;
+    private Collection<String> specialNeeds;
 
-    private Collection<DinnerDelivery> deliveries;
+    private Collection<String> deliveries;
 
     @Override
     public int hashCode() {
@@ -75,7 +65,7 @@ public class MenuItem implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        MenuItem other = (MenuItem) obj;
+        MenuItemVO other = (MenuItemVO) obj;
         if (title == null) {
             if (other.title != null)
                 return false;
@@ -176,30 +166,6 @@ public class MenuItem implements Serializable {
         this.profileId = profileId;
     }
 
-    public Collection<DinnerCategory> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Collection<DinnerCategory> categories) {
-        this.categories = categories;
-    }
-
-    public Collection<DinnerSpecialNeeds> getSpecialNeeds() {
-        return specialNeeds;
-    }
-
-    public void setSpecialNeeds(Collection<DinnerSpecialNeeds> specialNeeds) {
-        this.specialNeeds = specialNeeds;
-    }
-
-    public Collection<DinnerDelivery> getDeliveries() {
-        return deliveries;
-    }
-
-    public void setDeliveries(Collection<DinnerDelivery> deliveries) {
-        this.deliveries = deliveries;
-    }
-
     public Long getStartDate() {
         return startDate;
     }
@@ -222,5 +188,29 @@ public class MenuItem implements Serializable {
 
     public void setCloseDate(Long closeDate) {
         this.closeDate = closeDate;
+    }
+
+    public Collection<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Collection<String> categories) {
+        this.categories = categories;
+    }
+
+    public Collection<String> getSpecialNeeds() {
+        return specialNeeds;
+    }
+
+    public void setSpecialNeeds(Collection<String> specialNeeds) {
+        this.specialNeeds = specialNeeds;
+    }
+
+    public Collection<String> getDeliveries() {
+        return deliveries;
+    }
+
+    public void setDeliveries(Collection<String> deliveries) {
+        this.deliveries = deliveries;
     }
 }

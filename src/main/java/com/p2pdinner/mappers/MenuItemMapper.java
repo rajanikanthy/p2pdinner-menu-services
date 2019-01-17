@@ -14,4 +14,5 @@ public interface MenuItemMapper {
 	void updateMenuItem(MenuItem menuItem);
 	int partialUpdateMenuItem(MenuItem menuItem);
 	Collection<MenuItem> findAllMenuItemsById(@Param("profileId")int profileId);
+	void deleteMenuItem(@Param("profileId") int profileId, @Param("id") int id);
 }

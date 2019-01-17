@@ -14,7 +14,7 @@
 
     <select id="getSpecialNeedsByMenuId" resultMap="dinnerSpecialNeedsResultMap" parameterType="java.util.Map" statementType="PREPARED">
         select dc.id as c_id, dc.name
-            from dinner_special_needs dc inner join menu_item_category mic on (dc.id = mic.dinner_special_needs_id)
+            from dinner_special_needs dc inner join menu_item_special_needs mic on (dc.id = mic.dinner_special_needs_id)
                 inner join menu_items mi on (mic.menu_item_id = mi.id)
         where mi.id = #{menuItemId} and mi.user_profile_id = #{profileId}
     </select>
@@ -26,7 +26,7 @@
     <insert id="associateSpecialNeedsWithMenuItem"
             parameterType="java.util.Map"
             statementType="PREPARED"
-            keyProperty="id"
+            keyColumn="id"
             useGeneratedKeys="true"
             timeout="20">
         insert into menu_item_special_needs(menu_item_id, dinner_special_needs_id)

@@ -1,12 +1,18 @@
 package com.p2pdinner.controllers;
 
-import com.p2pdinner.domain.DinnerListing;
-import com.p2pdinner.domain.MenuItem;
+import com.p2pdinner.MenuService;
+import com.p2pdinner.domain.*;
+import com.p2pdinner.domain.vo.MenuItemVO;
 import com.p2pdinner.filepicker.FilePickerOperations;
 import com.p2pdinner.filepicker.FilePickerUploadResponse;
+import com.p2pdinner.mappers.DinnerCategoryMapper;
+import com.p2pdinner.mappers.DinnerDeliveryMapper;
+import com.p2pdinner.mappers.DinnerSpecialNeedsMapper;
 import com.p2pdinner.mappers.MenuItemMapper;
+import com.p2pdinner.services.MenuItemTransformationService;
 import com.p2pdinner.services.ProfileServicesProxy;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +38,19 @@ public class MenuItemController {
     private static final Logger _logger = LoggerFactory.getLogger(MenuItemController.class);
     private static final String[] IMAGE_EXTNS = { ".png", ".jpg", ".gif", ".bmp", "jpeg" };
 
+    private final MenuService menuService;
+
     @Autowired
     private MenuItemMapper menuItemMapper;
+
+    @Autowired
+    private DinnerCategoryMapper dinnerCategoryMapper;
+
+    @Autowired
+    private DinnerSpecialNeedsMapper dinnerSpecialNeedsMapper;
+
+    @Autowired
+    private DinnerDeliveryMapper dinnerDeliveryMapper;
 
     @Autowired
     private FilePickerOperations filePickerOperations;
@@ -41,25 +58,32 @@ public class MenuItemController {
     @Autowired
     private ProfileServicesProxy profileServicesProxy;
 
+    @Autowired
+    private MenuItemTransformationService menuItemTransformationService;
+
+    @Autowired
+    public MenuItemController(MenuService menuService) {
+        this.menuService = menuService;
+    }
+
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<MenuItem>> itemsByProfile(@PathVariable("profileId") Integer profileId) {
-        Collection<MenuItem> items = menuItemMapper.findAllMenuItemsById(profileId);
-        return ResponseEntity.ok(items);
+        return ResponseEntity.ok(menuService.menuItemsByProfile(profileId));
     }
 
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuItem> itemById(@PathVariable("profileId") Integer profileId, @PathVariable("id")Integer id) {
-        MenuItem menuItem = menuItemMapper.findMenuItemById(profileId, id);
-        return ResponseEntity.ok(menuItem) ;
+        return ResponseEntity.ok(menuService.menuItemById(profileId, id));
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createMenuItem(@PathVariable("profileId") Integer profileId , @RequestBody MenuItem menuItem) {
+    public ResponseEntity<?> createMenuItem(@PathVariable("profileId") Integer profileId , @RequestBody MenuItemVO mi) {
+        MenuItem menuItem = menuItemTransformationService.apply(mi);
         menuItem.setProfileId(profileId);
-        menuItemMapper.createMenuItem(menuItem);
-        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(menuItem.getId()).toUri()).build();
+        MenuItem createdItem = menuService.createMenuItem(menuItem);
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdItem.getId()).toUri()).build();
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -84,6 +108,16 @@ public class MenuItemController {
         menuItemMapper.partialUpdateMenuItem(menuItem);
         MenuItem updatedItem = menuItemMapper.findMenuItemById(profileId, id);
         return ResponseEntity.ok(updatedItem);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity deleteMenuItem(@PathVariable("profileId")Integer profileId, @PathVariable Integer id) {
+        MenuItem foundMenuItem = menuService.menuItemById(profileId, id);
+        if (foundMenuItem == null) {
+            return ResponseEntity.notFound().build();
+        }
+        menuService.deleteMenuItem(foundMenuItem);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "{id}/upload", produces = MediaType.APPLICATION_JSON_VALUE)

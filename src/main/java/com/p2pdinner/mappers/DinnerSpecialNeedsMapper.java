@@ -22,7 +22,7 @@ public interface DinnerSpecialNeedsMapper {
     Collection<DinnerSpecialNeeds> findAllSpecialNeeds();
     Collection<DinnerSpecialNeeds> getSpecialNeedsByMenuId(@Param("menuItemId") Integer profileId, @Param("profileId") Integer menuItemId);
 
-    DinnerCategory specialNeedsByName(@Param("specialNeedsByName") String name);
+    DinnerSpecialNeeds specialNeedsByName(@Param("name") String name);
 
     void associateSpecialNeedsWithMenuItem(@Param("menuItemId") Integer menuItemId, @Param("dinnerSpecialNeedsId") Integer dinnerSpecialNeedsId);
 

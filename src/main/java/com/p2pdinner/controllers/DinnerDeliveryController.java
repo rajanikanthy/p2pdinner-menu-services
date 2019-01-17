@@ -37,12 +37,12 @@ public class DinnerDeliveryController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/deliveryType")
-    public ResponseEntity<?> addSpecialNeed(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @RequestBody DinnerCategory dinnerCategory) {
-        DinnerDelivery dc = dinnerDeliveryMapper.deliveryByName(dinnerCategory.getName());
+    public ResponseEntity<?> addSpecialNeed(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @RequestBody DinnerDelivery dinnerDelivery) {
+        DinnerDelivery dc = dinnerDeliveryMapper.deliveryByName(dinnerDelivery.getName());
         MenuItem menuItem = menuItemMapper.findMenuItemById(profileId, menuItemId);
         if (dc != null) {
-            dinnerDeliveryMapper.associateDeliveryWithMenuItem(menuItem.getId(), dc.getId());
-            return ResponseEntity.ok(dinnerCategory);
+            dinnerDeliveryMapper.associateDeliveryTypeWithMenuItem(menuItem.getId(), dc.getId());
+            return ResponseEntity.ok(dinnerDelivery);
         } else {
             return ResponseEntity.badRequest().build();
         }
@@ -50,7 +50,7 @@ public class DinnerDeliveryController {
 
     @RequestMapping(path = "/api/{profileId}/menuitem/{menuItemId}/categories/{deliveryTypeId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @PathVariable("deliveryTypeId") Integer dinnerCategoryId) {
-        dinnerDeliveryMapper.disassociateDeliveryWithMenuItem(menuItemId, dinnerCategoryId);
+        dinnerDeliveryMapper.disassociateDeliveryTypeWithMenuItem(menuItemId, dinnerCategoryId);
         return ResponseEntity.ok().build();
     }
 }

@@ -1,6 +1,7 @@
 package com.p2pdinner.controllers;
 
 import com.p2pdinner.domain.DinnerCategory;
+import com.p2pdinner.domain.DinnerSpecialNeeds;
 import com.p2pdinner.domain.MenuItem;
 import com.p2pdinner.mappers.DinnerCategoryMapper;
 import com.p2pdinner.mappers.DinnerSpecialNeedsMapper;
@@ -36,12 +37,12 @@ public class DinnerSpeicalNeedsController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/specialNeeds")
-    public ResponseEntity<?> addSpecialNeed(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @RequestBody DinnerCategory dinnerCategory) {
-        DinnerCategory dc = dinnerSpecialNeedsMapper.specialNeedsByName(dinnerCategory.getName());
+    public ResponseEntity<?> addSpecialNeed(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @RequestBody DinnerSpecialNeeds dinnerSpecialNeeds) {
+        DinnerSpecialNeeds dc = dinnerSpecialNeedsMapper.specialNeedsByName(dinnerSpecialNeeds.getName());
         MenuItem menuItem = menuItemMapper.findMenuItemById(profileId, menuItemId);
         if (dc != null) {
             dinnerSpecialNeedsMapper.associateSpecialNeedsWithMenuItem(menuItem.getId(), dc.getId());
-            return ResponseEntity.ok(dinnerCategory);
+            return ResponseEntity.ok(dinnerSpecialNeeds);
         } else {
             return ResponseEntity.badRequest().build();
         }
