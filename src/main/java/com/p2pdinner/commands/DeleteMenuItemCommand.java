@@ -9,7 +9,7 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateMenuItemCommand {
+public class DeleteMenuItemCommand {
     @TargetAggregateIdentifier
     private String menuItemId;
 
