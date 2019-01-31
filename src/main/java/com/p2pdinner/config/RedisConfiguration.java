@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
@@ -28,7 +29,7 @@ public class RedisConfiguration {
 
     @Bean
     public Jackson2JsonRedisSerializer<AccessToken> jackson2JsonRedisSerializer() {
-        return new Jackson2JsonRedisSerializer<AccessToken>(AccessToken.class);
+        return new Jackson2JsonRedisSerializer<>(AccessToken.class);
     }
 
     @Bean(name = "accessTokenTemplate")
@@ -42,9 +43,8 @@ public class RedisConfiguration {
 
     @Bean
     public RedisTemplate redisTemplate() {
-        RedisTemplate<String,AccessToken> redisTemplate = new RedisTemplate<>();
+        RedisTemplate redisTemplate = new StringRedisTemplate();
         redisTemplate.setConnectionFactory(jedisConnectionFactory);
-        redisTemplate.setKeySerializer(stringRedisSerializer());
         return redisTemplate;
     }
 }

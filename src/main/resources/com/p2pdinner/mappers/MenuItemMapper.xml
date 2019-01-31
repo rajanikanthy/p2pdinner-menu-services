@@ -37,9 +37,9 @@
             parameterType="com.p2pdinner.domain.MenuItem"
             statementType="PREPARED"
             keyProperty="id"
-            useGeneratedKeys="true"
             timeout="20">
         INSERT INTO menu_items(
+        id,
         user_profile_id,
         description,
         is_active,
@@ -56,6 +56,7 @@
         end_date,
         close_date)
         VALUES (
+        #{id},
         #{profileId},
         #{description},
         #{isActive},

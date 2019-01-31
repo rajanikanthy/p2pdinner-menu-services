@@ -8,11 +8,11 @@ import java.util.Collection;
 
 @Mapper
 public interface MenuItemMapper {
-	MenuItem findMenuItemById(@Param("profileId") int profileId, @Param("id") int id);
+	MenuItem findMenuItemById(@Param("profileId") int profileId, @Param("id") String id);
 	void createMenuItem(MenuItem menuItem);
-	int doesMenuItemExist(@Param("profileId") int profileId, @Param("id") int id);
+	int doesMenuItemExist(@Param("profileId") int profileId, @Param("id") String id);
 	void updateMenuItem(MenuItem menuItem);
 	int partialUpdateMenuItem(MenuItem menuItem);
 	Collection<MenuItem> findAllMenuItemsById(@Param("profileId")int profileId);
-	void deleteMenuItem(@Param("profileId") int profileId, @Param("id") int id);
+	void deleteMenuItem(@Param("profileId") int profileId, @Param("id") String id);
 }

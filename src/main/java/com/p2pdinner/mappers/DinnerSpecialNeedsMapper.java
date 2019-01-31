@@ -20,11 +20,11 @@ import java.util.Optional;
 @Mapper
 public interface DinnerSpecialNeedsMapper {
     Collection<DinnerSpecialNeeds> findAllSpecialNeeds();
-    Collection<DinnerSpecialNeeds> getSpecialNeedsByMenuId(@Param("menuItemId") Integer profileId, @Param("profileId") Integer menuItemId);
+    Collection<DinnerSpecialNeeds> getSpecialNeedsByMenuId(@Param("profileId") Integer profileId, @Param("menuItemId") String menuItemId);
 
     DinnerSpecialNeeds specialNeedsByName(@Param("name") String name);
 
-    void associateSpecialNeedsWithMenuItem(@Param("menuItemId") Integer menuItemId, @Param("dinnerSpecialNeedsId") Integer dinnerSpecialNeedsId);
+    void associateSpecialNeedsWithMenuItem(@Param("menuItemId") String menuItemId, @Param("dinnerSpecialNeedsId") Integer dinnerSpecialNeedsId);
 
-    void disassociateSpecialNeedsWithMenuItem(@Param("menuItemId") Integer menuItemId, @Param("dinnerSpecialNeedsId") Integer dinnerSpecialNeedsId);
+    void disassociateSpecialNeedsWithMenuItem(@Param("menuItemId") String menuItemId, @Param("dinnerSpecialNeedsId") Integer dinnerSpecialNeedsId);
 }

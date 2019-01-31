@@ -8,8 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: int
-                  autoIncrement: true
+                  type: varchar2(255)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -180,7 +179,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: menu_item_id
-                  type: int
+                  type: varchar2(255)
                   constraints:
                     foreignKeyName: fk_category_menuitem
                     references: menu_items(id)
@@ -204,7 +203,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: menu_item_id
-                  type: int
+                  type: varchar2(255)
                   constraints:
                     foreignKeyName: fk_special_needs_menuitem
                     references: menu_items(id)
@@ -228,7 +227,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: menu_item_id
-                  type: int
+                  type: varchar2(255)
                   constraints:
                     foreignKeyName: fk_delivery_menuitem
                     references: menu_items(id)

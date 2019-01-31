@@ -16,8 +16,8 @@ import java.util.Optional;
 @Mapper
 public interface DinnerCategoryMapper {
     Collection<DinnerCategory> findAllCategories();
-    Collection<DinnerCategory> getCategoriesByMenuId(@Param("profileId") Integer profileId, @Param("menuItemId")Integer menuItemId);
+    Collection<DinnerCategory> getCategoriesByMenuId(@Param("profileId") Integer profileId, @Param("menuItemId")String menuItemId);
     DinnerCategory categoryByName(@Param("categoryByName")String name);
-    void associateCategoryWithMenuItem(@Param("menuItemId")Integer menuItemId, @Param("categoryId")Integer categoryId);
-    void disassociateCategoryWithMenuItem(@Param("menuItemId")Integer menuItemId, @Param("dinnerCategoryId") Integer dinnerCategoryId);
+    void associateCategoryWithMenuItem(@Param("menuItemId")String menuItemId, @Param("categoryId")Integer categoryId);
+    void disassociateCategoryWithMenuItem(@Param("menuItemId")String menuItemId, @Param("dinnerCategoryId") Integer dinnerCategoryId);
 }

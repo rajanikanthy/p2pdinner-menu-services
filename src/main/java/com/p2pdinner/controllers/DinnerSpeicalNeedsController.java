@@ -32,12 +32,12 @@ public class DinnerSpeicalNeedsController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/specialNeeds")
-    public ResponseEntity<?> categories(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId) {
+    public ResponseEntity<?> categories(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") String menuItemId) {
         return ResponseEntity.ok(dinnerSpecialNeedsMapper.getSpecialNeedsByMenuId(profileId, menuItemId));
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/specialNeeds")
-    public ResponseEntity<?> addSpecialNeed(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @RequestBody DinnerSpecialNeeds dinnerSpecialNeeds) {
+    public ResponseEntity<?> addSpecialNeed(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") String menuItemId, @RequestBody DinnerSpecialNeeds dinnerSpecialNeeds) {
         DinnerSpecialNeeds dc = dinnerSpecialNeedsMapper.specialNeedsByName(dinnerSpecialNeeds.getName());
         MenuItem menuItem = menuItemMapper.findMenuItemById(profileId, menuItemId);
         if (dc != null) {
@@ -49,7 +49,7 @@ public class DinnerSpeicalNeedsController {
     }
 
     @RequestMapping(path = "/api/{profileId}/menuitem/{menuItemId}/categories/{specialNeedsId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @PathVariable("dinnerCategoryId") Integer dinnerCategoryId) {
+    public ResponseEntity<?> deleteCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") String menuItemId, @PathVariable("dinnerCategoryId") Integer dinnerCategoryId) {
         dinnerSpecialNeedsMapper.disassociateSpecialNeedsWithMenuItem(menuItemId, dinnerCategoryId);
         return ResponseEntity.ok().build();
     }

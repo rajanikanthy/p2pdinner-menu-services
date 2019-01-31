@@ -32,12 +32,12 @@ public class DinnerCategoryController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/categories")
-    public ResponseEntity<?> categories(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId) {
+    public ResponseEntity<?> categories(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") String menuItemId) {
         return ResponseEntity.ok(dinnerCategoryMapper.getCategoriesByMenuId(profileId, menuItemId));
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/categories")
-    public ResponseEntity<?> addCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @RequestBody DinnerCategory dinnerCategory) {
+    public ResponseEntity<?> addCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") String menuItemId, @RequestBody DinnerCategory dinnerCategory) {
         DinnerCategory dc = dinnerCategoryMapper.categoryByName(dinnerCategory.getName());
         MenuItem menuItem = menuItemMapper.findMenuItemById(profileId, menuItemId);
         if (dc != null) {
@@ -49,7 +49,7 @@ public class DinnerCategoryController {
     }
 
     @RequestMapping(path = "/api/{profileId}/menuitem/{menuItemId}/categories/{dinnerCategoryId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @PathVariable("dinnerCategoryId") Integer dinnerCategoryId) {
+    public ResponseEntity<?> deleteCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") String menuItemId, @PathVariable("dinnerCategoryId") Integer dinnerCategoryId) {
         dinnerCategoryMapper.disassociateCategoryWithMenuItem(menuItemId, dinnerCategoryId);
         return ResponseEntity.ok().build();
     }

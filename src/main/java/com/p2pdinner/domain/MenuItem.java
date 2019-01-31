@@ -21,7 +21,7 @@ public class MenuItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
-    private Integer id;
+    private String id;
 
     private Integer profileId;
 
@@ -84,11 +84,11 @@ public class MenuItem implements Serializable {
         return true;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

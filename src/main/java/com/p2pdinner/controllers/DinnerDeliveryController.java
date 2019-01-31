@@ -32,12 +32,12 @@ public class DinnerDeliveryController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/deliveryType")
-    public ResponseEntity<?> categories(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId) {
+    public ResponseEntity<?> categories(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") String menuItemId) {
         return ResponseEntity.ok(dinnerDeliveryMapper.getDeliveryByMenuId(profileId, menuItemId));
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, path = "/api/{profileId}/menuitem/{menuItemId}/deliveryType")
-    public ResponseEntity<?> addSpecialNeed(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @RequestBody DinnerDelivery dinnerDelivery) {
+    public ResponseEntity<?> addSpecialNeed(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") String menuItemId, @RequestBody DinnerDelivery dinnerDelivery) {
         DinnerDelivery dc = dinnerDeliveryMapper.deliveryByName(dinnerDelivery.getName());
         MenuItem menuItem = menuItemMapper.findMenuItemById(profileId, menuItemId);
         if (dc != null) {
@@ -49,7 +49,7 @@ public class DinnerDeliveryController {
     }
 
     @RequestMapping(path = "/api/{profileId}/menuitem/{menuItemId}/categories/{deliveryTypeId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") Integer menuItemId, @PathVariable("deliveryTypeId") Integer dinnerCategoryId) {
+    public ResponseEntity<?> deleteCategory(@PathVariable("profileId") Integer profileId, @PathVariable("menuItemId") String menuItemId, @PathVariable("deliveryTypeId") Integer dinnerCategoryId) {
         dinnerDeliveryMapper.disassociateDeliveryTypeWithMenuItem(menuItemId, dinnerCategoryId);
         return ResponseEntity.ok().build();
     }

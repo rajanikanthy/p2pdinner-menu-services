@@ -20,8 +20,8 @@ import java.util.Optional;
 @Mapper
 public interface DinnerDeliveryMapper {
     Collection<DinnerDelivery> findAllDeliveryTypes();
-    Collection<DinnerDelivery> getDeliveryByMenuId(@Param("menuItemId")Integer profileId, @Param("profileId")Integer menuItemId);
+    Collection<DinnerDelivery> getDeliveryByMenuId(@Param("profileId")Integer profileId, @Param("menuItemId")String menuItemId);
     DinnerDelivery deliveryByName(@Param("name")String name);
-    void associateDeliveryTypeWithMenuItem(@Param("menuItemId")Integer menuItemId, @Param("dinnerDeliveryId")Integer dinnerDeliveryId);
-    void disassociateDeliveryTypeWithMenuItem(@Param("menuItemId")Integer menuItemId, @Param("dinnerDeliveryId")Integer dinnerDeliveryId);
+    void associateDeliveryTypeWithMenuItem(@Param("menuItemId")String menuItemId, @Param("dinnerDeliveryId")Integer dinnerDeliveryId);
+    void disassociateDeliveryTypeWithMenuItem(@Param("menuItemId")String menuItemId, @Param("dinnerDeliveryId")Integer dinnerDeliveryId);
 }

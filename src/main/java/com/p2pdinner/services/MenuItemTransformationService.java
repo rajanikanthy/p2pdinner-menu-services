@@ -1,8 +1,5 @@
 package com.p2pdinner.services;
 
-import com.p2pdinner.MenuService;
-import com.p2pdinner.domain.DinnerCategory;
-import com.p2pdinner.domain.DinnerSpecialNeeds;
 import com.p2pdinner.domain.MenuItem;
 import com.p2pdinner.domain.vo.MenuItemVO;
 import com.p2pdinner.mappers.DinnerCategoryMapper;
@@ -11,9 +8,9 @@ import com.p2pdinner.mappers.DinnerSpecialNeedsMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -38,6 +35,9 @@ public class MenuItemTransformationService implements Function<MenuItemVO, MenuI
     @Override
     public MenuItem apply(MenuItemVO menuItemVO) {
         MenuItem menuItem = new MenuItem();
+        if (!StringUtils.hasText(menuItemVO.getId())) {
+            menuItem.setId(UUID.randomUUID().toString());
+        }
         menuItem.setTitle(menuItemVO.getTitle());
         menuItem.setDescription(menuItemVO.getDescription());
         menuItem.setIsActive(menuItemVO.getIsActive());
