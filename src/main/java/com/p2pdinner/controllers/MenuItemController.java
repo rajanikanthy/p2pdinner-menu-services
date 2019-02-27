@@ -84,7 +84,8 @@ public class MenuItemController {
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateMenuItem(@PathVariable("profileId") Integer profileId, @PathVariable String id, @RequestBody MenuItem menuItem) {
+    public ResponseEntity<?> updateMenuItem(@PathVariable("profileId") Integer profileId, @PathVariable String id, @RequestBody MenuItemVO mi) {
+        MenuItem menuItem = menuItemTransformationService.apply(mi);
         menuItem.setProfileId(profileId);
         menuItem.setId(id);
         try {
@@ -101,7 +102,8 @@ public class MenuItemController {
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity patchMenuItem(@PathVariable("profileId")Integer profileId, @PathVariable String id, @RequestBody MenuItem menuItem) {
+    public ResponseEntity patchMenuItem(@PathVariable("profileId")Integer profileId, @PathVariable String id, @RequestBody MenuItemVO mi) {
+        MenuItem menuItem = menuItemTransformationService.apply(mi);
         menuItem.setProfileId(profileId);
         menuItem.setId(id);
         try {

@@ -50,6 +50,7 @@ public class MenuItemTransformationService implements Function<MenuItemVO, MenuI
         menuItem.setCostPerItem(menuItemVO.getCostPerItem());
         menuItem.setImageUri(menuItemVO.getImageUri());
         menuItem.setState(menuItemVO.getState());
+        menuItem.setStartDate(menuItemVO.getStartDate());
         menuItem.setEndDate(menuItemVO.getEndDate());
         menuItem.setCloseDate(menuItemVO.getCloseDate());
         if (menuItemVO.getCategories() != null && !menuItemVO.getCategories().isEmpty()) {

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.p2pdinner.mappers.MenuItemMapper">
     <resultMap type="com.p2pdinner.domain.MenuItem" id="MenuItemResultMap">
-        <id property="id" column="id"/>
+        <id property="id" column="id" javaType="java.lang.String"/>
         <!--   cart_id, stripe_charge_id, created_date, delivery_type, modified_date, pass_code, order_status, buyer_id, buyer_rating, seller_rating-->
         <result property="description" column="description"/>
         <result property="isActive" column="is_active"/>
