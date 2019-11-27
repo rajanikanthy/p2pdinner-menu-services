@@ -20,11 +20,32 @@
         <result property="startDate" column="start_date"/>
         <result property="endDate" column="end_date"/>
         <result property="closeDate" column="close_date"/>
-        <result property="profileId" column="user_profile_id" />
+        <result property="profileId" column="user_profile_id"/>
+        <collection property="categories" ofType="com.p2pdinner.domain.DinnerCategory">
+            <id property="id" column="dinner_category_id"/>
+            <result property="name" column="dinner_category_name"/>
+        </collection>
+        <collection property="deliveries" ofType="com.p2pdinner.domain.DinnerDelivery">
+            <id property="id" column="dinner_delivery_id"/>
+            <result property="name" column="dinner_delivery_name"/>
+        </collection>
+        <collection property="specialNeeds" ofType="com.p2pdinner.domain.DinnerSpecialNeeds">
+            <id property="id" column="dinner_special_needs_id"/>
+            <result property="name" column="dinner_special_needs_name"/>
+        </collection>
     </resultMap>
 
     <select id="findAllMenuItemsById" resultMap="MenuItemResultMap" statementType="PREPARED">
-        select * from menu_items where user_profile_id = #{profileId}
+        select mi.*, mic.dinner_category_id as dinner_category_id, dc.name as dinner_category_name,
+                mid.dinner_delivery_id as dinner_delivery_id, dd.name as dinner_delivery_name,
+                misn.dinner_special_needs_id as dinner_special_needs_id, dsn.name as dinner_special_needs_name
+        from menu_items mi inner join menu_item_category mic on (mi.id = mic.menu_item_id)
+                inner join dinner_category dc on (mic.dinner_category_id = dc.id)
+                inner join menu_item_delivery mid on (mi.id = mid.menu_item_id)
+                inner join dinner_delivery dd on (mid.dinner_delivery_id = dd.id)
+                inner join menu_item_special_needs misn on (mi.id = misn.menu_item_id)
+                inner join dinner_special_needs dsn on (misn.dinner_special_needs_id = dsn.id)
+        where user_profile_id = #{profileId};
     </select>
 
     <select id="findMenuItemById" resultMap="MenuItemResultMap" statementType="PREPARED">
@@ -80,20 +101,20 @@
             timeout="20">
         update menu_items
         set
-            description = #{description},
-            is_active = #{isActive},
-            title = #{title},
-            address_line1 = #{addressLine1} ,
-            address_line2 = #{addressLine2} ,
-            available_quantity = #{availableQuantity},
-            city = #{city},
-            cost_per_item = #{costPerItem},
-            image_uri = #{imageUri},
-            state = #{state} ,
-            zip_code = #{zipCode},
-            start_date = #{startDate} ,
-            end_date = #{endDate},
-            close_date = #{closeDate}
+        description = #{description},
+        is_active = #{isActive},
+        title = #{title},
+        address_line1 = #{addressLine1} ,
+        address_line2 = #{addressLine2} ,
+        available_quantity = #{availableQuantity},
+        city = #{city},
+        cost_per_item = #{costPerItem},
+        image_uri = #{imageUri},
+        state = #{state} ,
+        zip_code = #{zipCode},
+        start_date = #{startDate} ,
+        end_date = #{endDate},
+        close_date = #{closeDate}
         where id = #{id} and user_profile_id = #{profileId}
 
     </update>
